@@ -14,13 +14,14 @@ export class UsersService {
     return this.usersModel.findAll();
   }
 
-  findOne(params: Partial<UserDto>): Promise<Users> {
-    return this.usersModel.findOne({
+  async findOne(params: Partial<UserDto>): Promise<Users> {
+    const tempUser = await this.usersModel.findOne({
       where: {
-        id: params.id,
-        login: params.login,
+        ...params,
       },
     });
+
+    return tempUser;
   }
 
   async remove(id: string): Promise<void> {

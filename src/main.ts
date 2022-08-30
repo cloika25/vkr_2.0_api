@@ -10,6 +10,15 @@ async function bootstrap() {
     .setTitle('VKR example')
     .setDescription('The final qualifying work')
     .setVersion('1.0')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+        description: 'Enter your API key',
+      },
+      'JWT token',
+    )
     .build();
 
   const options: SwaggerDocumentOptions = {
