@@ -12,7 +12,7 @@ import { UsersModule } from './users/users.module';
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: 'localhost',
-      port: 5433,
+      port: 5432,
       username: 'postgres',
       password: 'postgres',
       database: 'vkrdb',
@@ -23,7 +23,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, AuthController],
   providers: [AppService],
 })
 export class AppModule {}
