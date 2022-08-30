@@ -1,29 +1,25 @@
 import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody } from '@nestjs/swagger';
-import { AppService } from './app.service';
+import { AuthService } from './auth/auth.service';
 import { LoginRequest } from './auth/auth.types';
+import { JwtAuthGuard } from './auth/jwtAuth.guard';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Get('/home')
-  getHome(): string {
-    return this.appService.getHome();
-  }
+  constructor(private readonly authService: AuthService) {}
 
   // TODO: заменить на JWT
   @ApiBody({ type: LoginRequest })
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req) {
-    console.log('debug');
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
     return req.user;
   }
 }
