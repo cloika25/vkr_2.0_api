@@ -10,10 +10,12 @@ export class UsersService {
     private usersModel: typeof Users,
   ) {}
 
+  /** Получение всех пользователей */
   async findAll(): Promise<Users[]> {
     return this.usersModel.findAll();
   }
 
+  /** Поиск пользователя по параметрам */
   async findOne(params: Partial<UserDto>): Promise<Users> {
     const tempUser = await this.usersModel.findOne({
       where: {
@@ -24,8 +26,15 @@ export class UsersService {
     return tempUser;
   }
 
+  /** Удаление пользователя */
   async remove(id: string): Promise<void> {
     const user = await this.findOne({ id: id });
     await user.destroy();
+  }
+
+  /** Создание пользователя */
+  async create(user: Partial<UserDto>): Promise<Users> {
+    const createdUser = await this.usersModel.create(user);
+    return createdUser;
   }
 }

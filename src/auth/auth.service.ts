@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../users/users.types';
 import { UsersService } from '../users/users.service';
 import { jwtConstants } from './constans';
+import { RegistrationRequest } from './auth.types';
 
 @Injectable()
 export class AuthService {
@@ -28,5 +29,16 @@ export class AuthService {
         secret: jwtConstants.secret,
       }),
     };
+  }
+
+  /** Регистрация нового пользователя */
+  async registration(payload: RegistrationRequest) {
+    const createdUsers = await this.usersService.findOne({
+      login: payload.login,
+    });
+    if (createdUsers) {
+      return 'Данный логин уже используется';
+    }
+    await this.usersService.create(payload);
   }
 }
