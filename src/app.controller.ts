@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBody, ApiSecurity } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { LoginRequest, RegistrationRequest } from './auth/auth.types';
@@ -17,15 +24,8 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
-  @ApiBody({ type: RegistrationRequest })
   @Post('auth/register')
-  async registration(@Request() req) {
-    return this.authService.registration(req.body);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async registration(@Body() registerDto: RegistrationRequest) {
+    return this.authService.registration(registerDto);
   }
 }
