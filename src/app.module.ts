@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { FormatModule } from './format/format.module';
+import { StagesModule } from './stages/stages.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { JwtService } from '@nestjs/jwt';
     EventsModule,
     AuthModule,
     UsersModule,
+    FormatModule,
+    StagesModule,
   ],
   controllers: [AppController, AuthController, AuthController],
   providers: [AppService, AuthService, JwtService],
