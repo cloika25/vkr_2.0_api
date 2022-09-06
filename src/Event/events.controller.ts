@@ -19,7 +19,6 @@ import {
 import { JwtAuthGuard } from '../auth/jwtAuth.guard';
 import { EventsService } from './events.service';
 import {
-  DeleteEventRequest,
   EventsDto,
   GetEventsByIdRequest,
   GetEventsResponse,
