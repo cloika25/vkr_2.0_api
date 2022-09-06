@@ -10,6 +10,7 @@ import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { FormatModule } from './format/format.module';
 import { StagesModule } from './stages/stages.module';
+import { RegistrationsModule } from './registrations/registrations.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { StagesModule } from './stages/stages.module';
     UsersModule,
     FormatModule,
     StagesModule,
+    RegistrationsModule,
   ],
   controllers: [AppController, AuthController, AuthController],
   providers: [AppService, AuthService, JwtService],
