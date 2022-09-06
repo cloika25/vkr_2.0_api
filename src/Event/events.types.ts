@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Events } from './events.model';
 
 export class EventsDto {
   @ApiProperty({
@@ -24,12 +25,40 @@ export class EventsDto {
     nullable: true,
   })
   dateEnd: Date;
+
+  constructor(event: Events) {
+    this.id = event.id;
+    this.fullName = event.fullName;
+    this.dateStart = event.dateStart;
+    this.dateEnd = event.dateEnd;
+  }
 }
 
 /** Параметры для получения мероприятия по Id */
 export class GetEventsByIdRequest {
   @ApiProperty({ description: 'Идентификатор мероприятия', nullable: false })
-  id: string;
+  id: number;
 }
 
 export class GetEventsByIdResponse extends EventsDto {}
+
+export class GetEventsResponse {
+  @ApiProperty({ nullable: false, type: [EventsDto] })
+  entities: EventsDto[];
+}
+
+export class PostEventResponse {
+  @ApiProperty({ nullable: false })
+  id: number;
+}
+
+export class PostEventRequest {
+  @ApiProperty({ nullable: false, description: 'Полное название мероприятия' })
+  fullName: string;
+
+  @ApiProperty({ nullable: false, description: 'Дата начала мероприятия' })
+  dateStart: Date;
+
+  @ApiProperty({ nullable: false, description: 'Дата окончания мероприятия' })
+  dateEnd: Date;
+}

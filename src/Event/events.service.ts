@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Events } from './events.model';
+import { EventsDto, GetEventsResponse, PostEventRequest } from './events.types';
 
 @Injectable()
 export class EventsService {
@@ -13,7 +14,15 @@ export class EventsService {
     return this.eventsModel.findAll();
   }
 
-  findOne(id: string): Promise<Events> {
+  async getAllEvents(): Promise<GetEventsResponse> {
+    const response = new GetEventsResponse();
+    const allEvents = await this.findAll();
+
+    response.entities = allEvents.map((event) => new EventsDto(event));
+    return response;
+  }
+
+  findOne(id: number): Promise<Events> {
     return this.eventsModel.findOne({
       where: {
         id,
@@ -21,7 +30,14 @@ export class EventsService {
     });
   }
 
-  async remove(id: string): Promise<void> {
+  async createEvent(event: PostEventRequest) {
+    const response = await this.eventsModel.create({
+      ...event,
+    });
+    return response.id;
+  }
+
+  async remove(id: number): Promise<void> {
     const user = await this.findOne(id);
     await user.destroy();
   }

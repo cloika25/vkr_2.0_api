@@ -12,10 +12,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /** Проверка пароля пользователя  */
   async validateUser(login: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne({ login: login });
-    const serializedUser = new UserDto(user);
-    if (user && serializedUser.password === pass) {
+    if (user && user.password === pass) {
+      const serializedUser = new UserDto(user);
       const { password, ...result } = serializedUser;
       return result;
     }
