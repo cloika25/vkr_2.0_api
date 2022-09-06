@@ -9,10 +9,10 @@ import {
 import { JwtAuthGuard } from '../auth/jwtAuth.guard';
 import { StagesService } from './stages.service';
 
-@ApiTags('Stages')
 @ApiSecurity('JWT token', ['JWT token'])
 @UseGuards(JwtAuthGuard)
-@Controller('stages')
+@ApiTags('Stages')
+@Controller('Stages')
 @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 export class StagesController {
   constructor(private readonly stagesService: StagesService) {}

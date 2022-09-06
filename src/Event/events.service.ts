@@ -17,7 +17,7 @@ export class EventsService {
   async getAllEvents(): Promise<GetEventsResponse> {
     const response = new GetEventsResponse();
     const allEvents = await this.findAll();
-
+    response.totalCount = allEvents.length;
     response.entities = allEvents.map((event) => new EventsDto(event));
     return response;
   }

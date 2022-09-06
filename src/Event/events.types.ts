@@ -45,6 +45,9 @@ export class GetEventsByIdResponse extends EventsDto {}
 export class GetEventsResponse {
   @ApiProperty({ nullable: false, type: [EventsDto] })
   entities: EventsDto[];
+
+  @ApiProperty({ nullable: false })
+  totalCount: number;
 }
 
 export class PostEventResponse {
