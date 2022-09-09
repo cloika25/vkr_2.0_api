@@ -35,3 +35,16 @@ export class PostFormatResponse {
   @ApiProperty({ description: 'Идентификатор формата' })
   id: number;
 }
+
+export class PutFormatRequest {
+  @ApiProperty({ description: 'Идентификатор формата' })
+  id: number;
+
+  @ApiProperty({ description: 'Наиманование формата' })
+  name: string;
+}
+
+export class DeleteFormatRequest {
+  @ApiProperty({ description: 'Идентификатор формата' })
+  id: number;
+}

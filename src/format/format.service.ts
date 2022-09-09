@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums';
+import { HttpException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/sequelize';
 import { Format } from './format.model';
 import {
@@ -6,6 +8,7 @@ import {
   GetFormatRequest,
   GetFormatResponse,
   PostFormatRequest,
+  PutFormatRequest,
 } from './format.types';
 
 @Injectable()
@@ -40,6 +43,21 @@ export class FormatService {
       ...format,
     });
     return response.id;
+  }
+
+  /** Обновление формата */
+  async updateFormat(format: PutFormatRequest) {
+    const tempFormat = await this.formatModel.findOne({
+      where: { id: format.id },
+    });
+    if (!tempFormat) {
+      throw new HttpException(
+        `Не найден формат с идентификатором ${format.id}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    tempFormat.name = format.name;
+    await tempFormat.save();
   }
 
   async remove(id: number): Promise<void> {
