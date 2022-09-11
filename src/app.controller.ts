@@ -6,13 +6,13 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiSecurity } from '@nestjs/swagger';
+import { ApiBody, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { LoginRequest, RegistrationRequest } from './auth/auth.types';
-import { JwtAuthGuard } from './auth/jwtAuth.guard';
 import { LocalAuthGuard } from './auth/localAuth.guard';
 
 @ApiSecurity('JWT token', ['JWT token'])
+@ApiTags('Auth')
 @Controller()
 export class AppController {
   constructor(private readonly authService: AuthService) {}

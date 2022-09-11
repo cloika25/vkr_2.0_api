@@ -21,3 +21,8 @@ export class PostStagesRequest {
   @IsNotEmpty()
   eventId: number;
 }
+
+export class PostStagesResponse {
+  @ApiProperty({ description: 'Идентификатор нового этапа' })
+  id: number;
+}

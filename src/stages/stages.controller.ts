@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwtAuth.guard';
 import { StagesService } from './stages.service';
-import { PostStagesRequest } from './stages.types';
+import { PostStagesRequest, PostStagesResponse } from './stages.types';
 
 @ApiSecurity('JWT token', ['JWT token'])
 @UseGuards(JwtAuthGuard)
@@ -39,7 +39,15 @@ export class StagesController {
 
   @Post()
   @ApiOperation({ summary: 'Создать этап' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PostStagesResponse,
+    description: 'Идентификатор нового этапа',
+  })
   async createStage(@Body() data: PostStagesRequest) {
-    return '';
+    const newStageId = await this.stagesService.createStage(data);
+    const response = new PostStagesResponse();
+    response.id = newStageId;
+    return response;
   }
 }

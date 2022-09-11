@@ -3,7 +3,6 @@ import {
   Column,
   ForeignKey,
   Model,
-  PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { Events } from '../Event/events.model';
@@ -11,10 +10,6 @@ import { Format } from '../format/format.model';
 
 @Table
 export class Stages extends Model {
-  @PrimaryKey
-  @Column
-  id: number;
-
   @Column
   name: string;
 

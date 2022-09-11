@@ -8,5 +8,6 @@ import { FormatService } from './format.service';
   imports: [SequelizeModule.forFeature([Format])],
   controllers: [FormatController],
   providers: [FormatService],
+  exports: [FormatService],
 })
 export class FormatModule {}

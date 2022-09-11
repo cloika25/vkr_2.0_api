@@ -39,9 +39,7 @@ export class FormatService {
   }
 
   async createFormat(format: PostFormatRequest) {
-    const response = await this.formatModel.create({
-      ...format,
-    });
+    const response = await this.formatModel.create({ ...format });
     return response.id;
   }
 
