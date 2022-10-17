@@ -41,6 +41,7 @@ export class AuthService {
     if (createdUsers) {
       return 'Данный логин уже используется';
     }
-    await this.usersService.create(payload);
+    const newUser = await this.usersService.create(payload);
+    return await this.login(newUser);
   }
 }
