@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Events } from './events.model';
 
 export class EventsDto {
@@ -57,6 +58,8 @@ export class PostEventResponse {
 
 export class PostEventRequest {
   @ApiProperty({ nullable: false, description: 'Полное название мероприятия' })
+  @IsNotEmpty()
+  @IsString()
   fullName: string;
 
   @ApiProperty({ nullable: false, description: 'Дата начала мероприятия' })

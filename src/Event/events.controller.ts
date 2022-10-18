@@ -33,6 +33,17 @@ import {
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Получение списка мероприятий' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: GetEventsResponse,
+  })
+  async findAll() {
+    return await this.eventsService.getAllEvents();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Получение мероприятия по Id' })
   @ApiParam({
@@ -47,17 +58,6 @@ export class EventsController {
   })
   findOne(@Param() params: GetEventsByIdRequest) {
     return this.eventsService.findOne(params.id);
-  }
-
-  @Get()
-  @ApiOperation({ summary: 'Получение списка мероприятий' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Success',
-    type: GetEventsResponse,
-  })
-  async findAll() {
-    return await this.eventsService.getAllEvents();
   }
 
   @Post()

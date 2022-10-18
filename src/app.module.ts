@@ -31,7 +31,7 @@ import { RegistrationsModule } from './registrations/registrations.module';
     StagesModule,
     RegistrationsModule,
   ],
-  controllers: [AppController, AuthController, AuthController],
+  controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtService],
 })
 export class AppModule {}
