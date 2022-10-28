@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -31,7 +32,7 @@ import {
 @Controller('Events')
 @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(private readonly eventsService: EventsService) { }
 
   @Get()
   @ApiOperation({ summary: 'Получение списка мероприятий' })
@@ -68,7 +69,14 @@ export class EventsController {
     type: PostEventResponse,
   })
   async createEvent(@Body() data: PostEventRequest) {
-    return await this.eventsService.createEvent(data);
+    try {
+      return await this.eventsService.createEvent(data);
+    } catch (error) {
+      throw new HttpException(
+        'Проищошла ошибка при создании мероприятия' + error.message,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Delete()
