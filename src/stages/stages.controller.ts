@@ -24,7 +24,7 @@ import { PostStagesRequest, PostStagesResponse } from './stages.types';
 @Controller('Stages')
 @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 export class StagesController {
-  constructor(private readonly stagesService: StagesService) {}
+  constructor(private readonly stagesService: StagesService) { }
 
   @Get(':eventId')
   @ApiParam({
@@ -33,7 +33,7 @@ export class StagesController {
     description: 'Идентификатор мероприятия',
   })
   @ApiOperation({ summary: 'Получить все этапы по мероприятию' })
-  async findAll(@Param() params: { eventId: number }) {
+  async findAll(@Param() params: { eventId: string }) {
     return await this.stagesService.findAllByEventId(params.eventId);
   }
 
