@@ -14,10 +14,10 @@ export class StagesService {
     private stagesModel: typeof Stages,
     private eventsService: EventsService,
     private formatService: FormatService,
-  ) {}
+  ) { }
 
   /** Получить все этапы по мероприятию */
-  async findAllByEventId(eventId: number) {
+  async findAllByEventId(eventId: string) {
     const stages = await this.stagesModel.findAll({
       where: {
         eventId: eventId,

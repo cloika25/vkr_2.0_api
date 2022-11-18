@@ -10,4 +10,7 @@ export class Events extends Model {
 
   @Column
   dateEnd: Date;
+
+  @Column
+  description: string;
 }

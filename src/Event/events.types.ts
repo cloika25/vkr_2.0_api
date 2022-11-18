@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Stages } from 'src/stages/stages.model';
 import { Events } from './events.model';
 
 export class EventsDto {
@@ -41,11 +42,14 @@ export class GetEventsByIdRequest {
   id: number;
 }
 
-export class GetEventsByIdResponse extends EventsDto {}
+export class GetEventsByIdResponse extends EventsDto {
+  @ApiProperty({ nullable: false, description: 'Этапы мероприятия' })
+  stages: Stages[]
+}
 
 export class GetEventsResponse {
   @ApiProperty({ nullable: false, type: [EventsDto] })
-  entities: EventsDto[];
+  entities: GetEventsByIdResponse[];
 
   @ApiProperty({ nullable: false })
   totalCount: number;
@@ -67,4 +71,10 @@ export class PostEventRequest {
 
   @ApiProperty({ nullable: false, description: 'Дата окончания мероприятия' })
   dateEnd: Date;
+
+  @ApiProperty({ nullable: true, description: 'Описание мероприятия' })
+  description: string;
+
+  @ApiProperty({ nullable: false, description: 'Этапы мероприятия', default: [] })
+  stages: Stages[]
 }
