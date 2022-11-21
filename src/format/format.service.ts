@@ -16,7 +16,7 @@ export class FormatService {
   constructor(
     @InjectModel(Format)
     private formatModel: typeof Format,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Format[]> {
     return this.formatModel.findAll();
@@ -31,11 +31,20 @@ export class FormatService {
   }
 
   findOne(id: number): Promise<Format> {
-    return this.formatModel.findOne({
-      where: {
-        id,
-      },
-    });
+    try {
+      const tempFormat = this.formatModel.findOne({
+        where: {
+          id,
+        },
+      });
+      return tempFormat
+    }
+    catch (error) {
+      throw new HttpException(
+        `Не найден формат с идентификатором ${id}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
   async createFormat(format: PostFormatRequest) {

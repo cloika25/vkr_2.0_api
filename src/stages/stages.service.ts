@@ -26,27 +26,8 @@ export class StagesService {
     return stages;
   }
 
-  /** Создать этап */
-  async createStage(data: PostStagesRequest) {
-    const tempEvent = await this.eventsService.findOne(data.eventId);
-    if (!tempEvent) {
-      throw new HttpException(
-        `Не найдено мероприятие с идентификатором ${data.eventId}`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
-    const tempFormat = await this.formatService.findOne(data.formatId);
-    if (!tempFormat) {
-      throw new HttpException(
-        `Не найден формат с идентификатором ${data.formatId}`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
-    const resultStage = await this.stagesModel.create({
-      ...data,
-      event: tempEvent,
-      format: tempFormat,
-    });
-    return resultStage.id;
+  async create(data) {
+    const result = await this.stagesModel.create(data);
+    return result
   }
 }

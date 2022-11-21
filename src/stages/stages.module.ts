@@ -7,8 +7,13 @@ import { Stages } from './stages.model';
 import { StagesService } from './stages.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Stages]), EventsModule, FormatModule],
+  imports: [
+    SequelizeModule.forFeature([Stages]),
+    EventsModule,
+    FormatModule
+  ],
   controllers: [StagesController],
   providers: [StagesService],
+  exports: [StagesService]
 })
-export class StagesModule {}
+export class StagesModule { }
