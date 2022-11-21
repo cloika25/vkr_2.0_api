@@ -24,7 +24,9 @@ import { PostStagesRequest, PostStagesResponse } from './stages.types';
 @Controller('Stages')
 @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 export class StagesController {
-  constructor(private readonly stagesService: StagesService) { }
+  constructor(
+    private readonly stagesService: StagesService
+  ) { }
 
   @Get(':eventId')
   @ApiParam({
@@ -37,17 +39,4 @@ export class StagesController {
     return await this.stagesService.findAllByEventId(params.eventId);
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Создать этап' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PostStagesResponse,
-    description: 'Идентификатор нового этапа',
-  })
-  async createStage(@Body() data: PostStagesRequest) {
-    const newStageId = await this.stagesService.createStage(data);
-    const response = new PostStagesResponse();
-    response.id = newStageId;
-    return response;
-  }
 }

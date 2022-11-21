@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { FormatService } from 'src/format/format.service';
-import { StagesService } from 'src/stages/stages.service';
-import { PostStagesRequest } from 'src/stages/stages.types';
+import { FormatService } from '../format/format.service';
+import { StagesService } from '../stages/stages.service';
+import { PostStagesRequest } from '../stages/stages.types';
 import { Events } from './events.model';
 import { EventsDto, GetEventsByIdResponse, GetEventsResponse, PostEventRequest } from './events.types';
 
@@ -15,21 +15,24 @@ export class EventsService {
     private formatService: FormatService
   ) { }
 
-  async findStages(event: EventsDto): Promise<GetEventsByIdResponse> {
+  async appendStages(event: EventsDto): Promise<GetEventsByIdResponse> {
     const stagesForEvent = await this.stagesService.findAllByEventId(event.id);
     return { ...event, stages: stagesForEvent }
   }
 
-  async findAll(): Promise<Events[]> {
-    return this.eventsModel.findAll();
-  }
-
   async getAllEvents(): Promise<GetEventsResponse> {
-    const response = new GetEventsResponse();
-    const allEvents = await this.findAll();
-    response.totalCount = allEvents.length;
-    response.entities = await Promise.all(allEvents.map((event) => this.findStages(new EventsDto(event))));
-    return response;
+    try {
+      const allEvents = await this.eventsModel.findAll();
+      const response = new GetEventsResponse();
+      response.totalCount = allEvents.length;
+      response.entities = await Promise.all(allEvents.map((event) => this.appendStages(new EventsDto(event))));
+      return response;
+    } catch (error) {
+      throw new HttpException(
+        'Не удалось получить все мероприятия' + error.message,
+        HttpStatus.BAD_REQUEST
+      )
+    }
   }
 
   findOne(id: number): Promise<Events> {
@@ -49,22 +52,35 @@ export class EventsService {
   }
 
   async createEvent(event: PostEventRequest) {
-    const response = await this.eventsModel.create({
-      ...event,
-    });
-    return response.id;
+    try {
+      const response = await this.eventsModel.create({
+        ...event,
+      });
+      return response.id;
+    } catch (error) {
+      throw new HttpException(
+        'Не удалось создать мероприятие' + error.message,
+        HttpStatus.BAD_REQUEST
+      )
+    }
   }
 
   async remove(id: number): Promise<void> {
-    const user = await this.findOne(id);
-    await user.destroy();
+    try {
+      const event = await this.findOne(id);
+      await event.destroy();
+    } catch (error) {
+      throw new HttpException(
+        'Не удалось удалить мероприятие ' + error.message,
+        HttpStatus.BAD_REQUEST
+      )
+    }
   }
 
   /** Создать этап */
   async createStage(data: PostStagesRequest) {
     const tempEvent = await this.findOne(data.eventId);
     const tempFormat = await this.formatService.findOne(data.formatId);
-
     const resultStage = await this.stagesService.create({
       ...data,
       event: tempEvent,

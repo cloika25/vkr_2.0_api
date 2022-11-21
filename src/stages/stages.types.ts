@@ -26,3 +26,38 @@ export class PostStagesResponse {
   @ApiProperty({ description: 'Идентификатор нового этапа' })
   id: number;
 }
+
+export class GetStageById {
+  @ApiProperty({ description: 'Наименование этапа', nullable: false })
+  name: string;
+
+  @ApiProperty({ description: 'Описание этапа' })
+  description: string;
+
+  @ApiProperty({ description: 'Дата начала', nullable: false })
+  dateStart: Date;
+
+  @ApiProperty({ description: 'Дата окончания' })
+  dateEnd: Date;
+
+  @ApiProperty({ description: 'Тип этапа', nullable: false })
+  formatId: number;
+
+  @ApiProperty({ description: 'Мероприятие', nullable: false })
+  @IsNotEmpty()
+  eventId: number;
+}
+
+export class StageInEvent {
+  @ApiProperty({ description: 'Наименование этапа', nullable: false })
+  name: string;
+
+  @ApiProperty({ description: 'Описание этапа' })
+  description: string;
+
+  @ApiProperty({ description: 'Дата начала', nullable: false })
+  dateStart: Date;
+
+  @ApiProperty({ description: 'Дата окончания' })
+  dateEnd: Date;
+}

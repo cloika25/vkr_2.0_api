@@ -1,23 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { FormatService } from '../format/format.service';
-import { EventsService } from '../Event/events.service';
 import { Stages } from './stages.model';
-import { PostStagesRequest } from './stages.types';
-import { HttpException } from '@nestjs/common/exceptions';
-import { HttpStatus } from '@nestjs/common/enums';
+import { StageInEvent } from './stages.types';
 
 @Injectable()
 export class StagesService {
   constructor(
     @InjectModel(Stages)
     private stagesModel: typeof Stages,
-    private eventsService: EventsService,
-    private formatService: FormatService,
   ) { }
 
   /** Получить все этапы по мероприятию */
-  async findAllByEventId(eventId: string) {
+  async findAllByEventId(eventId: string): Promise<StageInEvent[]> {
     const stages = await this.stagesModel.findAll({
       where: {
         eventId: eventId,

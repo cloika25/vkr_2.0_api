@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -16,6 +15,7 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import { PostStagesRequest, PostStagesResponse } from '../stages/stages.types';
 import { JwtAuthGuard } from '../auth/jwtAuth.guard';
 import { EventsService } from './events.service';
 import {
@@ -32,7 +32,9 @@ import {
 @Controller('Events')
 @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) { }
+  constructor(
+    private readonly eventsService: EventsService,
+  ) { }
 
   @Get()
   @ApiOperation({ summary: 'Получение списка мероприятий' })
@@ -69,14 +71,7 @@ export class EventsController {
     type: PostEventResponse,
   })
   async createEvent(@Body() data: PostEventRequest) {
-    try {
-      return await this.eventsService.createEvent(data);
-    } catch (error) {
-      throw new HttpException(
-        'Проищошла ошибка при создании мероприятия' + error.message,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    return await this.eventsService.createEvent(data);
   }
 
   @Delete()
@@ -87,6 +82,20 @@ export class EventsController {
   })
   @ApiOperation({ summary: 'Удаление мероприятия' })
   async deleteEvent(@Param() params: { id: number }) {
-    return this.eventsService.remove(params.id);
+    return await this.eventsService.remove(params.id);
+  }
+
+  @Post(':id/stage')
+  @ApiOperation({ summary: 'Создание этапа' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PostStagesResponse,
+    description: 'Идентификатор нового этапа',
+  })
+  async createStage(@Body() data: PostStagesRequest) {
+    const newStageId = await this.eventsService.createStage(data);
+    const response = new PostStagesResponse();
+    response.id = newStageId;
+    return response;
   }
 }

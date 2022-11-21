@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Stages } from 'src/stages/stages.model';
+import { GetStageById, StageInEvent } from '../stages/stages.types';
 import { Events } from './events.model';
 
 export class EventsDto {
@@ -43,12 +43,12 @@ export class GetEventsByIdRequest {
 }
 
 export class GetEventsByIdResponse extends EventsDto {
-  @ApiProperty({ nullable: false, description: 'Этапы мероприятия' })
-  stages: Stages[]
+  @ApiProperty({ nullable: false, description: 'Этапы мероприятия', type: [StageInEvent] })
+  stages: StageInEvent[]
 }
 
 export class GetEventsResponse {
-  @ApiProperty({ nullable: false, type: [EventsDto] })
+  @ApiProperty({ nullable: false, type: [GetEventsByIdResponse] })
   entities: GetEventsByIdResponse[];
 
   @ApiProperty({ nullable: false })
@@ -61,20 +61,37 @@ export class PostEventResponse {
 }
 
 export class PostEventRequest {
-  @ApiProperty({ nullable: false, description: 'Полное название мероприятия' })
+  @ApiProperty({
+    nullable: false,
+    description: 'Полное название мероприятия'
+  })
   @IsNotEmpty()
   @IsString()
   fullName: string;
 
-  @ApiProperty({ nullable: false, description: 'Дата начала мероприятия' })
+  @ApiProperty({
+    nullable: false,
+    description: 'Дата начала мероприятия'
+  })
   dateStart: Date;
 
-  @ApiProperty({ nullable: false, description: 'Дата окончания мероприятия' })
+  @ApiProperty({
+    nullable: false,
+    description: 'Дата окончания мероприятия'
+  })
   dateEnd: Date;
 
-  @ApiProperty({ nullable: true, description: 'Описание мероприятия' })
+  @ApiProperty({
+    nullable: true,
+    description: 'Описание мероприятия'
+  })
   description: string;
 
-  @ApiProperty({ nullable: false, description: 'Этапы мероприятия', default: [] })
-  stages: Stages[]
+  @ApiProperty({
+    nullable: false,
+    description: 'Этапы мероприятия',
+    type: [StageInEvent],
+    default: []
+  })
+  stages: StageInEvent[]
 }

@@ -3,12 +3,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Events } from './events.model';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
-import { StagesModule } from 'src/stages/stages.module';
+import { StagesModule } from '../stages/stages.module';
+import { FormatModule } from '../format/format.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Events]),
-    StagesModule
+    StagesModule,
+    FormatModule
   ],
   providers: [EventsService],
   controllers: [EventsController],
