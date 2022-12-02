@@ -5,12 +5,14 @@ import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { StagesModule } from '../stages/stages.module';
 import { FormatModule } from '../format/format.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Events]),
     StagesModule,
-    FormatModule
+    FormatModule,
+    UsersModule
   ],
   providers: [EventsService],
   controllers: [EventsController],

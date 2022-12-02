@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { GetStageById, StageInEvent } from '../stages/stages.types';
+import { Author } from '../users/users.types';
+import { StageInEvent } from '../stages/stages.types';
 import { Events } from './events.model';
 
 export class EventsDto {
@@ -44,7 +45,10 @@ export class GetEventsByIdRequest {
 
 export class GetEventsByIdResponse extends EventsDto {
   @ApiProperty({ nullable: false, description: 'Этапы мероприятия', type: [StageInEvent] })
-  stages: StageInEvent[]
+  stages: StageInEvent[];
+
+  @ApiProperty({ nullable: false, description: 'Автор мероприятия', type: Author })
+  author: Author;
 }
 
 export class GetEventsResponse {

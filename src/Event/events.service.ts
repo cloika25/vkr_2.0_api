@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Author } from '../users/users.types';
 import { FormatService } from '../format/format.service';
 import { StagesService } from '../stages/stages.service';
-import { PostStagesRequest } from '../stages/stages.types';
+import { PostStagesRequest, StageInEvent } from '../stages/stages.types';
 import { Events } from './events.model';
 import { EventsDto, GetEventsByIdResponse, GetEventsResponse, PostEventRequest } from './events.types';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class EventsService {
@@ -12,12 +14,29 @@ export class EventsService {
     @InjectModel(Events)
     private eventsModel: typeof Events,
     private stagesService: StagesService,
-    private formatService: FormatService
+    private formatService: FormatService,
+    private usersService: UsersService,
   ) { }
 
-  async appendStages(event: EventsDto): Promise<GetEventsByIdResponse> {
+  async findStagesForEvent(event: Events): Promise<StageInEvent[]> {
     const stagesForEvent = await this.stagesService.findAllByEventId(event.id);
-    return { ...event, stages: stagesForEvent }
+    return stagesForEvent
+  }
+
+  async findAuthorForEvent(event: Events): Promise<Author> {
+    const tempUser = await this.usersService.findOne({ id: event.authorId });
+    return new Author(tempUser)
+  }
+
+  async prepareEventBeforeReturn(event: Events): Promise<GetEventsByIdResponse> {
+    const stages = await this.findStagesForEvent(event);
+    const author = await this.findAuthorForEvent(event);
+    const eventDto = new EventsDto(event)
+    return {
+      ...eventDto,
+      stages: stages,
+      author: author
+    }
   }
 
   async getAllEvents(): Promise<GetEventsResponse> {
@@ -25,7 +44,9 @@ export class EventsService {
       const allEvents = await this.eventsModel.findAll();
       const response = new GetEventsResponse();
       response.totalCount = allEvents.length;
-      response.entities = await Promise.all(allEvents.map((event) => this.appendStages(new EventsDto(event))));
+      response.entities = await Promise.all(allEvents.map(
+        (event) => this.prepareEventBeforeReturn(event)
+      ));
       return response;
     } catch (error) {
       throw new HttpException(
@@ -35,6 +56,14 @@ export class EventsService {
     }
   }
 
+  /** Получение мероприятия со всей информацией по Id */
+  async getEventById(id: number): Promise<GetEventsByIdResponse> {
+    const tempEvent = await this.findOne(id);
+    const readyEvent = await this.prepareEventBeforeReturn(tempEvent);
+    return readyEvent
+  }
+
+  /** Поиск мероприятия по Id */
   findOne(id: number): Promise<Events> {
     try {
       const tempEvent = this.eventsModel.findOne({

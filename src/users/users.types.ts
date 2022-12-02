@@ -17,3 +17,18 @@ export class UserDto {
     this.name = payload.name;
   }
 }
+
+/** Модель для добавление в описание мероприятия */
+export class Author {
+  id: string;
+
+  login: string;
+
+  name: string
+
+  constructor(payload: Users) {
+    this.id = payload.id;
+    this.login = payload.login;
+    this.name = payload.name;
+  }
+}

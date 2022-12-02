@@ -8,7 +8,7 @@ import { LocalAuthGuard } from './auth/localAuth.guard';
 @ApiTags('Auth')
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @ApiBody({ type: LoginRequest })
   @UseGuards(LocalAuthGuard)

@@ -1,4 +1,5 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Users } from '../users/users.model';
 
 @Table
 export class Events extends Model {
@@ -13,4 +14,11 @@ export class Events extends Model {
 
   @Column
   description: string;
+
+  @BelongsTo(() => Users)
+  author: Users;
+
+  @Column
+  @ForeignKey(() => Users)
+  authorId: string
 }
