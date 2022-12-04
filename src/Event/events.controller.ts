@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Req,
   HttpStatus,
   Param,
   Post,
@@ -25,6 +26,7 @@ import {
   PostEventRequest,
   PostEventResponse,
 } from './events.types';
+import { JWTUser } from 'src/types';
 
 @ApiSecurity('JWT token', ['JWT token'])
 @ApiTags('Events')
@@ -70,8 +72,11 @@ export class EventsController {
     description: 'Success',
     type: PostEventResponse,
   })
-  async createEvent(@Body() data: PostEventRequest) {
-    return await this.eventsService.createEvent(data);
+  async createEvent(@Body() data: PostEventRequest, @Req() request) {
+    if (!('user' in request)) {
+      return 'Не удалось найти автора'
+    };
+    return await this.eventsService.createEvent(data, (request as { user: JWTUser }).user.userId);
   }
 
   @Delete()

@@ -80,10 +80,11 @@ export class EventsService {
     }
   }
 
-  async createEvent(event: PostEventRequest) {
+  async createEvent(event: PostEventRequest, userId: string) {
     try {
       const response = await this.eventsModel.create({
         ...event,
+        authorId: userId,
       });
       return response.id;
     } catch (error) {

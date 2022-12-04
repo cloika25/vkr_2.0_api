@@ -22,11 +22,10 @@ import { RegistrationsModule } from './registrations/registrations.module';
       password: 'postgres',
       database: 'vkrdb',
       autoLoadModels: true,
-      synchronize: true,
     }),
+    UsersModule,
     EventsModule,
     AuthModule,
-    UsersModule,
     FormatModule,
     StagesModule,
     RegistrationsModule,
@@ -34,4 +33,4 @@ import { RegistrationsModule } from './registrations/registrations.module';
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,7 +1,7 @@
 import { BelongsTo, Column, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Users } from '../users/users.model';
 
-@Table
+@Table({ tableName: 'Events' })
 export class Events extends Model {
   @Column
   fullName: string;

@@ -27,3 +27,10 @@ export interface SwaggerDocumentOptions {
    */
   operationIdFactory?: (controllerKey: string, methodKey: string) => string;
 }
+
+export interface JWTUser {
+  /** Идентификатор пользователя */
+  userId: string,
+  /** Логин пользователя */
+  login: string
+}
