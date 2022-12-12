@@ -8,7 +8,7 @@ export class UsersService {
   constructor(
     @InjectModel(Users)
     private usersModel: typeof Users,
-  ) {}
+  ) { }
 
   /** Получение всех пользователей */
   async findAll(): Promise<Users[]> {
@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   /** Удаление пользователя */
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const user = await this.findOne({ id: id });
     await user.destroy();
   }

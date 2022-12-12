@@ -20,5 +20,5 @@ export class Events extends Model {
 
   @Column
   @ForeignKey(() => Users)
-  authorId: string
+  authorId: number
 }

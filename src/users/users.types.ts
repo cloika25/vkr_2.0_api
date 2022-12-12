@@ -2,7 +2,7 @@ import { Users } from './users.model';
 
 /** DTO модель пользователя */
 export class UserDto {
-  id: string;
+  id: number;
 
   login: string;
 
