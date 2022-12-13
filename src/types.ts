@@ -30,7 +30,7 @@ export interface SwaggerDocumentOptions {
 
 export interface JWTUser {
   /** Идентификатор пользователя */
-  userId: string,
+  userId: number,
   /** Логин пользователя */
   login: string
 }

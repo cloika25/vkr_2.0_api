@@ -80,7 +80,7 @@ export class EventsService {
     }
   }
 
-  async createEvent(event: PostEventRequest, userId: string) {
+  async createEvent(event: PostEventRequest, userId: number) {
     try {
       const response = await this.eventsModel.create({
         ...event,
@@ -89,7 +89,7 @@ export class EventsService {
       return response.id;
     } catch (error) {
       throw new HttpException(
-        'Не удалось создать мероприятие' + error.message,
+        'Не удалось создать мероприятие ' + error.message,
         HttpStatus.BAD_REQUEST
       )
     }

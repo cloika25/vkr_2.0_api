@@ -62,7 +62,7 @@ export class EventsController {
     type: EventsDto,
   })
   findOne(@Param() params: GetEventsByIdRequest) {
-    return this.eventsService.findOne(params.id);
+    return this.eventsService.getEventById(params.id);
   }
 
   @Post()
